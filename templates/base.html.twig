@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-bs-theme="dark">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
@@ -13,6 +13,18 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <main class="d-flex flex-nowrap">
+
+            <div class="d-flex flex-column flex-shrink-0 shadow" id="side-menu">
+                <div class="lead">Wiki Coaster</div>
+            </div>
+            <div class="p-4 flex-grow-1">
+                <div id="main-content">
+                    {% block body %}{% endblock %}
+                </div>
+                
+            </div>
+        </main>
+        
     </body>
 </html>
