@@ -37,6 +37,8 @@ class CoasterController extends AbstractController
             return $this->redirectToRoute('app_coaster_index');
         }
 
+        dump($coaster);
+
         return $this->render('coaster/add.html.twig', [
             'coasterForm' => $form,
         ]);
@@ -47,8 +49,31 @@ class CoasterController extends AbstractController
     {
         $coasters = $coasterRepository->findAll();
 
+        dump($coasters);
+
         return $this->render('coaster/index.html.twig', [
             'coasters' => $coasters,
+        ]);
+    }
+
+    #[Route('/coaster/{id}/edit')]
+    public function edit(Coaster $coaster, Request $request, EntityManagerInterface $em): Response
+    {
+        $form = $this->createForm(CoasterType::class, $coaster);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // Met à jour la DB
+            $em->flush();
+
+            return $this->redirectToRoute('app_coaster_index');
+        }
+
+        dump($coaster);
+
+        return $this->render('coaster/edit.html.twig', [
+            'coasterForm' => $form,
         ]);
     }
 }
