@@ -1,14 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Category index{% endblock %}
+{% block title %}Catégories{% endblock %}
 
 {% block body %}
-    <h1>Category index</h1>
-
+    <h1>Catégories</h1>
+    <div class="my-2">
+        <a href="{{ path('app_category_new') }}" class="btn btn-success"> <i class="bi bi-plus"></i> Ajouter une catégorie</a>
+    </div>
+    
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Name</th>
                 <th>Color</th>
                 <th>actions</th>
@@ -17,12 +19,13 @@
         <tbody>
         {% for category in categories %}
             <tr>
-                <td>{{ category.id }}</td>
                 <td>{{ category.name }}</td>
-                <td>{{ category.color }}</td>
+                <td>{% if category.color is not empty %}
+                    <span class="badge" style="background-color: {{ category.color }}">{{ category.color }}{% endif %}</span></td>
                 <td>
-                    <a href="{{ path('app_category_show', {'id': category.id}) }}">show</a>
-                    <a href="{{ path('app_category_edit', {'id': category.id}) }}">edit</a>
+                    <a href="{{ path('app_category_edit', {'id': category.id}) }}" class="btn btn-secondary btn-sm">
+                        <i class="bi bi-pencil"></i>
+                    </a>
                 </td>
             </tr>
         {% else %}
@@ -33,5 +36,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_category_new') }}">Create new</a>
+    
 {% endblock %}

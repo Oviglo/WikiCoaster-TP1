@@ -45,17 +45,20 @@
         
         <div class="infos d-flex">
             <div class="mx-2">
-                Hauteur {{ coaster.maxHeight }}m
+                <i class="bi bi-arrow-bar-up"></i> Hauteur {{ coaster.maxHeight }}m
             </div>
             <div class="mx-2">
-                Longueur {{ coaster.length }}m
+                <i class="bi bi-arrows"></i> Longueur {{ coaster.length }}m
             </div>
             <div class="mx-2">
-                Vitesse max. {{ coaster.maxSpeed }}km/h
+                <i class="bi bi-speedometer"></i> Vitesse max. {{ coaster.maxSpeed }}km/h
             </div>
         </div>
-        <a href="{{ path('app_coaster_edit', {'id': coaster.id}) }}" class="btn btn-secondary">Modifier</a>
-        <a href="{{ path('app_coaster_delete', {'id': coaster.id}) }}" class="ms-1 btn btn-danger">Supprimer</a>
+        <div class="d-flex justify-content-end">
+            <a href="{{ path('app_coaster_edit', {'id': coaster.id}) }}" class="btn btn-secondary"><i class="bi bi-pencil"></i></a>
+            <a href="{{ path('app_coaster_delete', {'id': coaster.id}) }}" class="ms-1 btn btn-danger"><i class="bi bi-trash"></i></a>
+        </div>
+        
     </div>
 </div>
 {% endfor %}

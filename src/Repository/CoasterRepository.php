@@ -26,6 +26,7 @@ class CoasterRepository extends ServiceEntityRepository
     ): Paginator
     {
         $qb = $this->createQueryBuilder('c')
+            ->addSelect('p, cat')
             ->leftJoin('c.park', 'p')
             ->leftJoin('c.categories', 'cat')
             ->setMaxResults($count) // LIMIT
