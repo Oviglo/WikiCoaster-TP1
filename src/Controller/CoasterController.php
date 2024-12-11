@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Coaster;
 use App\Form\CoasterType;
+use App\Repository\CategoryRepository;
 use App\Repository\CoasterRepository;
+use App\Repository\ParkRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +15,37 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CoasterController extends AbstractController
 {
+    #[Route('/coaster/')]
+    public function index(
+        CoasterRepository $coasterRepository,
+        ParkRepository $parkRepository,
+        CategoryRepository $categoryRepository,
+        Request $request
+    ): Response
+    {
+        $parkId = (int) $request->get('park', '');
+        $categoryId = (int) $request->get('category', '');
+        $search = $request->get('search', '');
+
+        $itemCount = 10;
+        $page = max($request->get('p', 1), 1);
+        $begin = ($page - 1) * $itemCount;
+
+        // $coasters = $coasterRepository->findAll();
+        $coasters = $coasterRepository->findFiltered($parkId, $categoryId, $search, $itemCount, $begin);
+
+        dump($coasters);
+
+        $pageCount = max(ceil($coasters->count() / $itemCount), 1);
+
+        return $this->render('coaster/index.html.twig', [
+            'coasters' => $coasters,
+            'parks' => $parkRepository->findAll(),
+            'categories' => $categoryRepository->findAll(),
+            'pageCount' => $pageCount,
+        ]);
+    }
+
     #[Route(path: '/coaster/add')]
     public function add(EntityManagerInterface $em, Request $request): Response
     {
@@ -41,18 +74,6 @@ class CoasterController extends AbstractController
 
         return $this->render('coaster/add.html.twig', [
             'coasterForm' => $form,
-        ]);
-    }
-
-    #[Route('/coaster/')]
-    public function index(CoasterRepository $coasterRepository): Response
-    {
-        $coasters = $coasterRepository->findAll();
-
-        dump($coasters);
-
-        return $this->render('coaster/index.html.twig', [
-            'coasters' => $coasters,
         ]);
     }
 

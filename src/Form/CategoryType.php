@@ -2,29 +2,28 @@
 
 namespace App\Form;
 
-use App\Entity\Park;
+use App\Entity\Category;
+use App\Entity\Coaster;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ParkType extends AbstractType
+class CategoryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name')
-            ->add('country', CountryType::class, [
-                'preferred_choices' => ['FR', 'DE', 'BE', 'IT', 'ES'],
-            ])
-            ->add('openingYear')
+            ->add('color', ColorType::class)
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Park::class,
+            'data_class' => Category::class,
         ]);
     }
 }
