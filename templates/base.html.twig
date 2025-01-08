@@ -13,7 +13,6 @@
         {% endblock %}
     </head>
     <body>
-        
         <main class="d-flex flex-nowrap">
             <div class="d-flex flex-column flex-shrink-0 shadow" id="side-menu">
                 <div class="lead">Wiki Coaster</div>
@@ -36,7 +35,8 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                       <div class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <a class="btn btn-primary" aria-disabled="true" href="{{ path('app_register') }}">S'incrire</a>
+                        <a class="btn btn-primary mx-1" href="{{ path('app_register') }}">S'incrire</a>
+                        <a class="btn btn-secondary mx-1" href="{{ path('app_login') }}">S'identifier</a>
                       </div>
                     </div>
                   </div>

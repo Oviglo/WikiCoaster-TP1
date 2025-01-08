@@ -4,7 +4,11 @@
 <h1>Liste des coasters</h1>
 
 <div class="d-flex justify-content-between flex-wrap">
+    {% if is_granted('ROLE_USER') %}
     <a href="{{ path('app_coaster_add') }}" class="btn btn-success">Ajouter un coaster</a>
+    {% else %}
+    Connectez-vous pour ajouter un coaster
+    {% endif %}
 
     {# form:get.d-flex.justify-content-between #}
     <form action="" method="get" class="d-flex justify-content-between">
