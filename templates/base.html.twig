@@ -13,6 +13,7 @@
         {% endblock %}
     </head>
     <body>
+        
         <main class="d-flex flex-nowrap">
             <div class="d-flex flex-column flex-shrink-0 shadow" id="side-menu">
                 <div class="lead">Wiki Coaster</div>
@@ -22,12 +23,25 @@
                       <a class="nav-link" href="{{ path('app_coaster_index') }}"><i class="bi bi-minecart"></i> Coasters</a>
                       <a class="nav-link" href="{{ path('app_park_index') }}"><i class="bi bi-geo"></i> Parcs</a>
                       <a class="nav-link" href="{{ path('app_category_index') }}"><i class="bi bi-tags"></i> Catégories</a>
+                      <a class="nav-link" href="{{ path('app_user_index') }}"><i class="bi bi-person-fill"></i> Utilisateurs</a>
                     </li>
                 </ul>
 
             </div>
-            <div class="p-4 flex-grow-1">
-                <div id="main-content">
+            <div class="flex-grow-1">
+                <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                  <div class="container-fluid">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                      <div class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <a class="btn btn-primary" aria-disabled="true" href="{{ path('app_register') }}">S'incrire</a>
+                      </div>
+                    </div>
+                  </div>
+                </nav>
+                <div id="main-content" class="p-4">
                     {% block body %}{% endblock %}
                 </div>   
             </div>
