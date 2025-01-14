@@ -17,6 +17,11 @@
 
             <div class="d-flex flex-column flex-shrink-0 shadow" id="side-menu">
                 <div class="lead">Wiki Coaster</div>
+                <nav class="nav flex-column">
+                    <a class="nav-link" href="{{ path('app_coaster_index') }}"><i class="bi bi-minecart"></i> Coasters</a>
+                    <a class="nav-link" href="{{ path('app_park_index') }}"><i class="bi bi-geo-alt"></i> Parcs</a>
+                    <a class="nav-link" href="{{ path('app_category_index') }}"><i class="bi bi-tags"></i> Catégories</a>
+                </ul>
             </div>
             <div class="p-4 flex-grow-1">
                 <div id="main-content">

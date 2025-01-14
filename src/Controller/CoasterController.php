@@ -4,7 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Coaster;
 use App\Form\CoasterType;
+use App\Repository\CategoryRepository;
 use App\Repository\CoasterRepository;
+use App\Repository\ParkRepository;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +20,8 @@ class CoasterController extends AbstractController
     public function add(Request $request, EntityManagerInterface $em): Response
     {
         $entity = new Coaster();
+        $user = $this->getUser();
+
         $form = $this->createForm(CoasterType::class, $entity);
 
         $form->handleRequest($request);
@@ -33,22 +38,47 @@ class CoasterController extends AbstractController
     }
 
     #[Route('coaster/')]
-    public function index(CoasterRepository $coasterRepository): Response
+    public function index(Request $request, CoasterRepository $coasterRepository, ParkRepository $parkRepository, CategoryRepository $categoryRepository): Response
     {
-        $coasters = $coasterRepository->findAll();
+        
+        $parks = $parkRepository->findBy([], ['name' => 'ASC']);
+        $categories = $categoryRepository->findBy([], ['name' => 'ASC']);
+        $itemCount = 5;
+        $page = $request->get('p', 1);
+
+        $coasters = $coasterRepository->findFiltered(
+            $request->query->get('park',''),
+            $request->query->get('category',''),
+            $page,
+            $itemCount
+        );
+        
+        $pageCount = max(ceil($coasters->count() / $itemCount), 1);
 
         return $this->render('coaster/index.html.twig', [
             'coasters' => $coasters,
+            'parks' => $parks,
+            'categories' => $categories,
+            'pageCount' => $pageCount,
+            'p' => $page,
         ]);
     }
 
     #[Route('coaster/{id}/edit')]
-    public function edit(Coaster $coaster, Request $request, EntityManagerInterface $em): Response
+    public function edit(Coaster $coaster, Request $request, EntityManagerInterface $em, FileUploader $fileUploader): Response
     {
+        $this->denyAccessUnlessGranted('EDIT', $coaster);
+        
         $form = $this->createForm(CoasterType::class, $coaster);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) {
+                $fileName = $fileUploader->upload($imageFile);
+                $coaster->setImageFileName($fileName);
+            }
+
             $em->flush();
 
             return $this->redirectToRoute('app_coaster_index');
