@@ -47,6 +47,12 @@ class Coaster
     #[ORM\ManyToOne(inversedBy: 'coasters')]
     private ?User $author = null;
 
+    #[ORM\Column(nullable: true)]
+    private null|bool $published = false;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageFileName = null;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -161,6 +167,30 @@ class Coaster
     public function setAuthor(?User $author): static
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function setPublished(bool $published): static
+    {
+        $this->published = $published;
+
+        return $this;
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->published ?? false;
+    }
+
+    public function getImageFileName(): ?string
+    {
+        return $this->imageFileName;
+    }
+
+    public function setImageFileName(?string $imageFileName): static
+    {
+        $this->imageFileName = $imageFileName;
 
         return $this;
     }

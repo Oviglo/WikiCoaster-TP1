@@ -9,12 +9,19 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Intl\Countries;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Validator\Constraints\Image;
 
 class CoasterType extends AbstractType
 {
+    public function __construct(
+        private readonly AuthorizationCheckerInterface $authorizationChecker
+    ) {}
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -42,7 +49,24 @@ class CoasterType extends AbstractType
                         ->orderBy('c.name', 'ASC');
                 }
             ])
+
+            //->add('imageFileName')
+            ->add('image', FileType::class, [
+                'mapped' => false, // Ne pas appeler la méthode getImage dans l'entité Coaster
+                'required' => false,
+                'constraints' => [
+                    new Image(
+                        maxSize: '2M'
+                    )
+                ]
+            ])
         ;
+
+        if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
+            $builder->add('published', options: [
+                'label' => 'Publier la fiche',
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
