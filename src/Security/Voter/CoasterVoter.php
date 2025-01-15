@@ -9,8 +9,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 final class CoasterVoter extends Voter
 {
-    public const EDIT = 'POST_EDIT';
-    public const VIEW = 'POST_VIEW';
+    public const EDIT = 'EDIT';
+    public const VIEW = 'VIEW';
 
     public function __construct(
         private readonly AuthorizationCheckerInterface $authorizationChecker

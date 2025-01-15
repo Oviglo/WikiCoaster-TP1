@@ -109,6 +109,8 @@ class CoasterController extends AbstractController
     #[Route('/coaster/{id}/delete')]
     public function delete(Coaster $coaster, Request $request, EntityManagerInterface $em): Response
     {
+        $this->denyAccessUnlessGranted(CoasterVoter::EDIT, $coaster);
+        
         if ($this->isCsrfTokenValid(
             'delete'.$coaster->getId(),
             $request->request->get('_token')
