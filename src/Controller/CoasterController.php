@@ -23,8 +23,7 @@ class CoasterController extends AbstractController
         ParkRepository $parkRepository,
         CategoryRepository $categoryRepository,
         Request $request
-    ): Response
-    {
+    ): Response {
         $parkId = (int) $request->get('park', '');
         $categoryId = (int) $request->get('category', '');
         $search = $request->get('search', '');
@@ -36,7 +35,7 @@ class CoasterController extends AbstractController
         // $coasters = $coasterRepository->findAll();
         $coasters = $coasterRepository->findFiltered($parkId, $categoryId, $search, $itemCount, $begin);
 
-        dump($coasters);
+        // dump($coasters);
 
         $pageCount = max(ceil($coasters->count() / $itemCount), 1);
 
@@ -87,12 +86,11 @@ class CoasterController extends AbstractController
     public function edit(Coaster $coaster, Request $request, EntityManagerInterface $em): Response
     {
         $this->denyAccessUnlessGranted(CoasterVoter::EDIT, $coaster);
-        
+
         $form = $this->createForm(CoasterType::class, $coaster);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             // Met à jour la DB
             $em->flush();
 
@@ -110,17 +108,17 @@ class CoasterController extends AbstractController
     public function delete(Coaster $coaster, Request $request, EntityManagerInterface $em): Response
     {
         $this->denyAccessUnlessGranted(CoasterVoter::EDIT, $coaster);
-        
+
         if ($this->isCsrfTokenValid(
             'delete'.$coaster->getId(),
             $request->request->get('_token')
         )) {
             $em->remove($coaster);
             $em->flush();
-        
+
             return $this->redirectToRoute('app_coaster_index');
         }
-        
+
         return $this->render('coaster/delete.html.twig', [
             'coaster' => $coaster,
         ]);
