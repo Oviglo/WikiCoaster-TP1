@@ -37,7 +37,7 @@ class CoasterController extends AbstractController
         // $coasters = $coasterRepository->findAll();
         $coasters = $coasterRepository->findFiltered($parkId, $categoryId, $search, $itemCount, $begin);
 
-        dump($coasters);
+        // dump($coasters);
 
         $pageCount = max(ceil($coasters->count() / $itemCount), 1);
 
@@ -83,7 +83,7 @@ class CoasterController extends AbstractController
             return $this->redirectToRoute('app_coaster_index');
         }
 
-        dump($coaster);
+        //dump($coaster);
 
         return $this->render('coaster/add.html.twig', [
             'coasterForm' => $form,
